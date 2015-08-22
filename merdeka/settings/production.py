@@ -17,15 +17,15 @@ def get_env_setting(setting):
         raise ImproperlyConfigured(error_msg)
 
 # set allowed host, a must have configuration
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 # set databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'merdeka',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'hackathon',
+        'PASSWORD': 'merdekadengancode',
         'HOST': 'localhost',
     }
 }
