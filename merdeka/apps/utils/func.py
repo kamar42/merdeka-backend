@@ -28,7 +28,12 @@ def jsonify(data):
     return json.dumps(data)
 
 def json_response(data):
-    return HttpResponse(jsonify(data), content_type='application/json')
+    resp = HttpResponse(jsonify(data), content_type='application/json')
+    resp["Access-Control-Allow-Origin"] = "*"
+    resp["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    resp["Access-Control-Max-Age"] = "1000"
+    resp["Access-Control-Allow-Headers"] = "*"
+    return resp
 
 def set_status(resp, data):
     resp.update({'status': data})

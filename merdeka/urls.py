@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from merdeka.apps.base.views import api_view, merdeka_view
+from merdeka.apps.base.views import merdeka_view, user_login
+from merdeka.apps.mdk.views import api_view
 
 urlpatterns = [
     url(r'^$', merdeka_view, name='merdeka_view'),
-    url(r'^api/(?P<model>[-\w]+)$', api_view, name='api_view'),
+    url(r'^api/user/login/$', user_login, name='user_login'),
     url(r'^api/(?P<model>[-\w]+)/$', api_view, name='api_view'),
+    url(r'^api/(?P<model>[-\w]+)$', api_view, name='api_view'),
     url(r'^api', api_view, name='api_view'),
     url(r'^admin/', include(admin.site.urls)),
 ]

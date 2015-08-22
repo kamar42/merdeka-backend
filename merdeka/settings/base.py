@@ -54,7 +54,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 BASE_APPS = (
-    'flat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,6 +65,7 @@ BASE_APPS = (
 # project apps
 PROJECT_APPS = (
     'merdeka.apps.base',
+    'merdeka.apps.mdk',
 )
 # 3rd apps
 THIRD_APPS = (
@@ -77,6 +77,13 @@ INSTALLED_APPS = BASE_APPS + PROJECT_APPS + THIRD_APPS
 
 # setting admin honeypot
 ADMIN_HONEYPOT_EMAIL_ADMINS = False
+
+# set auth model
+AUTH_USER_MODEL = 'base.MyUser'
+# set authenticating backends
+AUTHENTICATION_BACKENDS = (
+    'merdeka.apps.base.backends.CustomMyUserBackend',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

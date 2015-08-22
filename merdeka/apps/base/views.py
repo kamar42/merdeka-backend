@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from merdeka.apps.utils.func import find_model, make_response, json_response, jsonify, set_data, set_status, set_message
+from .forms import LoginForm
 
 def api_view(request, **kwargs):
     resp = make_response()
@@ -32,3 +33,49 @@ def api_view(request, **kwargs):
 
 def merdeka_view(request):
     return render(request, 'base/merdeka.html', locals())
+
+def user_login(request):
+    resp = make_response()
+    if not request.is_ajax() or request.method != 'POST':
+        set_status(resp, 'failed')
+        set_message(resp, 'Request Not Found.')
+        resp.pop('data')
+        resp.pop('errors')
+        resp.pop('fields')
+        return json_response(resp)
+
+    if request.user.is_authenticated():
+        set_status(resp, 'failed')
+        set_message(resp, 'You have been already logged in.')
+        return json_response(resp)
+
+    f = LoginForm(request.POST)
+    if f.is_valid():
+        _r = auth(request, f)
+        set_status(resp, _r['status'])
+        set_message(resp, _r['message'])
+        if _r['status'] == 'failed':
+            resp.pop('data')
+            resp.pop('errors')
+            resp.pop('fields')
+    else:
+        set_status(resp, 'failed')
+        set_message(resp, 'Invalid Data.')
+        set_errors(resp, f.errors)
+        resp.pop('data')
+        resp.pop('fields')
+    return json_response(resp)
+
+def auth(request, form):
+    username = form.cleaned_data['username']
+    password = form.cleaned_data['password']
+    user = authenticate(username=username, password=password)
+    resp = dict(
+        status='error',
+        message='Somethings wrong, please contact the administrator or try again.'
+        )
+    if user is not None and user.is_active:
+        login(request, user)
+        resp.update({'status': 'success', 'message': 'Login Successfull.'})
+
+    return resp
