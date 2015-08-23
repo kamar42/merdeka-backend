@@ -13,6 +13,7 @@ def make_response():
     return dict(
         status='success',
         message='',
+        child='',
         data='',
         errors='',
         fields=''
@@ -32,7 +33,7 @@ def json_response(data):
     resp["Access-Control-Allow-Origin"] = "*"
     resp["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
     resp["Access-Control-Max-Age"] = "1000"
-    resp["Access-Control-Allow-Headers"] = "*"
+    # resp["Access-Control-Allow-Headers"] = "*"
     return resp
 
 def set_status(resp, data):
@@ -40,6 +41,9 @@ def set_status(resp, data):
 
 def set_message(resp, data):
     resp.update({'message': data})
+
+def set_child(resp, data):
+    resp.update({'child': data})
 
 def set_data(resp, data):
     resp.update({'data': data})

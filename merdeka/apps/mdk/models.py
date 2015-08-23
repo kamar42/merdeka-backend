@@ -179,3 +179,22 @@ class Venues(models.Model):
     def save(self, **kwargs):
         self.unique_name = slugify(self.name)
         super(Venues, self).save(**kwargs)
+
+class Data(models.Model):
+    class Meta:
+        db_table = 'master_data'
+        verbose_name = 'Data'
+        verbose_name_plural = 'Data'
+
+    commodity = models.ForeignKey(Commodities)
+    goods = models.ForeignKey(Goods)
+    goods_child = models.ForeignKey(GoodsChilds)
+    price = models.DecimalField(max_digits=19, decimal_places=2)
+    unit = models.ForeignKey(BaseUnit)
+    venue = models.ForeignKey(Venues)
+    province = models.ForeignKey(Province)
+    city = models.ForeignKey(City)
+    created = models.DateTimeField(default=timezone.now)
+
+    def __unicode__(self):
+        return unicode(self.venue)
